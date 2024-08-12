@@ -27,13 +27,15 @@ export async function generateNewShortURL(req, res) {
     }
 
     const shortId = nanoid(8);
+    const user = req.user;
     await URL.create({
         shortId: shortId,
         originalURL: body.url,
         visitHistory: [],
+        createdBy: user.userId,
     });
 
-    return res.json({ shortId: shortId });
+    return res.status(201).json({ shortId: shortId });
 }
 
 export async function getAnalyticsOfURL(req, res) {
