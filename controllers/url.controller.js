@@ -49,3 +49,13 @@ export async function getAnalyticsOfURL(req, res) {
         analytics: result.visitHistory,
     });
 }
+
+export async function getAllURLs(req, res) {
+    const result = await URL.find();
+
+    if(!result) return res.status(400).json({ error: "Unable to find URLs" });
+
+    return res.json({
+        records: result
+    });
+}

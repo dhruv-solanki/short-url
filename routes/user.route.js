@@ -1,6 +1,6 @@
 import express from "express";
-import asyncMiddleware from "../middlewares/async";
-import { signUp, logIn } from "../controllers/user.controller";
+import asyncMiddleware from "../middlewares/async.js";
+import { signUp, logIn } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
