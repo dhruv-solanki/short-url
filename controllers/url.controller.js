@@ -51,7 +51,9 @@ export async function getAnalyticsOfURL(req, res) {
 }
 
 export async function getAllURLs(req, res) {
-    const result = await URL.find();
+    const userId = req.user.userId;
+    // only send URLs belong to requested user
+    const result = await URL.find({ createdBy: userId });
 
     if(!result) return res.status(400).json({ error: "Unable to find URLs" });
 
