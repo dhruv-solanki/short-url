@@ -49,3 +49,31 @@ export async function logIn(req, res) {
     }, process.env.JWT_SECRET);
     return res.status(200).json({ token: token });
 }
+
+export async function uploadProfileImage(req, res) {
+    if(!req.file) return res.status(400).json({ message: "Please upload file" });
+
+    const user = req.user;
+    const profileImagePath = `/public/images/${req.file.filename}`;
+
+    const entry = await User.findOneAndUpdate(
+        {
+            _id: user.userId,
+        },
+        {
+            profileImagePath: profileImagePath
+        }
+    );
+
+    if(!entry) return res.status(400).json({ error: "Unable to find user" });
+
+    return res.status(200).json({ message: "User profile image uploaded successfully" });
+}
+
+export async function getUserProfileImage(req, res) {
+    const userId = req.user.userId;
+    const user = await User.findOne({ _id: userId });
+    if(!user.profileImagePath) return res.status(403).json({ message: "User profile image not found" });
+
+    return res.status(200).sendFile(user.profileImagePath, { root: "." });
+}
